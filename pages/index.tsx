@@ -1,12 +1,28 @@
 import { useState } from 'react';
 import useSWR from 'swr';
-import '../styles/globals.css';
+
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
+interface Company {
+  id: number;
+  name: string;
+  details: string;
+}
+
+interface Director {
+  id: number;
+  name: string;
+}
+
+interface SelectedCompany {
+  company: Company;
+  directors: Director[];
+}
+
 const Home = () => {
   const { data: companies, error } = useSWR('/api/companies', fetcher);
-  const [selectedCompany, setSelectedCompany] = useState<any>(null);
+  const [selectedCompany, setSelectedCompany] = useState<SelectedCompany | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleCompanyClick = async (id: number) => {
@@ -102,7 +118,7 @@ const Home = () => {
         </section>
 
         <section className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {companies.map((company: any) => (
+          {companies.map((company: Company) => (
             <button
               key={company.id}
               onClick={() => handleCompanyClick(company.id)}
@@ -119,7 +135,7 @@ const Home = () => {
             <p className="mt-2 text-gray-700">{selectedCompany.company.details}</p>
             <h4 className="mt-4 text-xl font-semibold text-blue-900">Directors:</h4>
             <ul className="list-disc list-inside text-gray-700">
-              {selectedCompany.directors.map((director: any) => (
+              {selectedCompany.directors.map((director: Director) => (
                 <li key={director.id}>{director.name}</li>
               ))}
             </ul>
