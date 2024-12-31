@@ -11,4 +11,4 @@ function MyApp({ Component, pageProps }: AppProps) {  // Use AppProps to type Co
   );
 }
 
-export default MyApp;
+export default MyApp; 
